@@ -7,7 +7,7 @@ import { DepartmentModel } from '../schema';
  * @returns return true if exists
  */
 export default async function existsById (id: string): Promise<boolean> {
-  const result = await DepartmentModel.exists({ _id: id, deletedAt: undefined });
+  const result = await DepartmentModel.exists({ _id: id });
 
   return result;
 }

@@ -8,10 +8,10 @@ async function method (request: Request, response: Response, session?: ClientSes
     id,
   } = request.params;
 
-  const department = await Department.remove(id, session);
+  const result = await Department.remove(id, session);
 
   return response.success({
-    department: department,
+    removed: result,
   }, 'ITEM_REMOVED');
 }
 

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { ClientSession } from 'mongoose';
-import User from 'src/models/User';
+import CostCenter from 'src/models/CostCenter';
 import parameterValidation from './parameter-validation';
 
 async function method (request: Request, response: Response, session?: ClientSession): Promise<Response> {
@@ -8,7 +8,7 @@ async function method (request: Request, response: Response, session?: ClientSes
     id,
   } = request.params;
 
-  const result = await User.remove(id, session);
+  const result = await CostCenter.remove(id, session);
 
   return response.success({
     removed: result,

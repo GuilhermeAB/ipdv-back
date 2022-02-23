@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { ClientSession } from 'mongoose';
-import User from 'src/models/User';
+import CostCenter from 'src/models/CostCenter';
 import parameterValidation from './parameter-validation';
 
 async function method (request: Request, response: Response, session?: ClientSession): Promise<Response> {
@@ -8,11 +8,18 @@ async function method (request: Request, response: Response, session?: ClientSes
     id,
   } = request.params;
 
-  const result = await User.remove(id, session);
+  const {
+    description,
+  } = request.body;
+
+  const costCenter = await CostCenter.update({
+    _id: id,
+    description: description,
+  }, session);
 
   return response.success({
-    removed: result,
-  }, 'ITEM_REMOVED');
+    costCenter: costCenter,
+  }, 'ITEM_UPDATED');
 }
 
 export default {

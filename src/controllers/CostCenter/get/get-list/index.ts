@@ -1,21 +1,15 @@
 import { Request, Response } from 'express';
 import { ClientSession } from 'mongoose';
-import User from 'src/models/User';
-import parameterValidation from './parameter-validation';
+import CostCenter from 'src/models/CostCenter';
 
 async function method (request: Request, response: Response, session?: ClientSession): Promise<Response> {
-  const {
-    id,
-  } = request.params;
-
-  const result = await User.remove(id, session);
+  const list = await CostCenter.getList(session);
 
   return response.success({
-    removed: result,
-  }, 'ITEM_REMOVED');
+    list: list,
+  });
 }
 
 export default {
-  validation: parameterValidation,
   method: method,
 };
