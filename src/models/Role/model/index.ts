@@ -16,7 +16,7 @@ export default function makeRole (role: RoleType): Readonly<RoleType> {
     throw new ValidationError('DESCRIPTION_MIN_LENGTH', { value: 3 });
   }
   if (role.description.length > 30) {
-    throw new ValidationError('DESCRIPTION_MIN_LENGTH', { value: 30 });
+    throw new ValidationError('DESCRIPTION_MAX_LENGTH', { value: 30 });
   }
 
   return Object.freeze({

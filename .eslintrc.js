@@ -30,6 +30,7 @@ module.exports = {
   overrides: [
     {
       files: ['**/*.ts', '**/*.tsx', '*.ts', '*.tsx'],
+      excludedFiles: '*.spec.ts',
       extends: [
         'plugin:import/typescript',
         'plugin:@typescript-eslint/recommended',
@@ -45,6 +46,24 @@ module.exports = {
       },
       rules: {
         '@typescript-eslint/no-non-null-assertion': 0,
+      },
+    },
+    // JEST
+    {
+      files: ['*.spec.ts', '**/*.spec.ts'],
+      extends: [
+        'plugin:jest/all',
+        'plugin:import/recommended',
+      ],
+      plugins: [
+        'jest',
+        'import',
+      ],
+      parser: '@typescript-eslint/parser',
+      rules: {
+        'import/extensions': 0,
+        'import/no-extraneous-dependencies': 0,
+        '@typescript-eslint/no-explicit-any': 0,
       },
     },
   ],

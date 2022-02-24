@@ -22,20 +22,39 @@ routes.get('/', (_request: Request, response: Response) => response.json({ messa
 // Authentication
 // ///////////////////////////////////////////////////////////////////////////////
 
+/**
+ * GET /auth
+ *
+ * Get authentication (token/cookies)
+ */
 routes.get('/auth', makeExpressCallback(Auth.get.getToken.method));
 
 // ///////////////////////////////////////////////////////////////////////////////
 // Role
 // ///////////////////////////////////////////////////////////////////////////////
 
-routes.post('/role',
+/**
+ * POST /role
+ *
+ * Create a new role
+ */
+routes.post(
+  '/role',
   auth.isAuthenticated,
   Role.post.add.validation,
-  makeExpressCallback(Role.post.add.method));
+  makeExpressCallback(Role.post.add.method),
+);
 
-routes.get('/role',
+/**
+ * GET /role
+ *
+ * Get roles
+ */
+routes.get(
+  '/role',
   auth.isAuthenticated,
-  makeExpressCallback(Role.get.getList.method));
+  makeExpressCallback(Role.get.getList.method),
+);
 
 // ///////////////////////////////////////////////////////////////////////////////
 // User
@@ -46,108 +65,236 @@ routes.get('/role',
  *
  * Create a new user
  */
-routes.post('/user',
+routes.post(
+  '/user',
   auth.isAuthenticated,
   User.post.add.validation,
-  makeExpressCallback(User.post.add.method));
+  makeExpressCallback(User.post.add.method),
+);
 
-routes.put('/user/:id',
+/**
+ * PUT /user/:id
+ *
+ * Update user
+ */
+routes.put(
+  '/user/:id',
   auth.isAuthenticated,
   User.put.update.validation,
-  makeExpressCallback(User.put.update.method));
+  makeExpressCallback(User.put.update.method),
+);
 
-routes.delete('/user/:id',
+/**
+ * DELETE /user/:id
+ *
+ * Delete a user
+ */
+routes.delete(
+  '/user/:id',
   auth.isAuthenticated,
   User.delete.delete.validation,
-  makeExpressCallback(User.delete.delete.method));
+  makeExpressCallback(User.delete.delete.method),
+);
 
-routes.get('/user',
+/**
+ * GEt /user
+ *
+ * Get users
+ */
+routes.get(
+  '/user',
   auth.isAuthenticated,
-  makeExpressCallback(User.get.getList.method));
+  makeExpressCallback(User.get.getList.method),
+);
 
-routes.get('/user/:id',
+/**
+ * GET /user/:id
+ *
+ * Get user by id
+ */
+routes.get(
+  '/user/:id',
   auth.isAuthenticated,
   User.get.getById.validation,
-  makeExpressCallback(User.get.getById.method));
+  makeExpressCallback(User.get.getById.method),
+);
 
 // ///////////////////////////////////////////////////////////////////////////////
 // Department
 // ///////////////////////////////////////////////////////////////////////////////
 
-routes.post('/department',
+/**
+ * POST /department
+ *
+ * Create a new department
+ */
+routes.post(
+  '/department',
   auth.isAuthenticated,
   Department.post.add.validation,
-  makeExpressCallback(Department.post.add.method));
+  makeExpressCallback(Department.post.add.method),
+);
 
-routes.post('/department/:id',
+/**
+ * POST /department/:id
+ *
+ * Add user to department
+ */
+routes.post(
+  '/department/:id',
   auth.isAuthenticated,
   Department.post.addUser.validation,
-  makeExpressCallback(Department.post.addUser.method));
+  makeExpressCallback(Department.post.addUser.method),
+);
 
-routes.patch('/department/:id',
+/**
+ * PATCH /department/:id
+ *
+ * Update department
+ */
+routes.patch(
+  '/department/:id',
   auth.isAuthenticated,
   Department.patch.update.validation,
-  makeExpressCallback(Department.patch.update.method));
+  makeExpressCallback(Department.patch.update.method),
+);
 
-routes.delete('/department/:id',
+/**
+ * DELETE /department/:id
+ *
+ * Delete department
+ */
+routes.delete(
+  '/department/:id',
   auth.isAuthenticated,
   Department.delete.delete.validation,
-  makeExpressCallback(Department.delete.delete.method));
+  makeExpressCallback(Department.delete.delete.method),
+);
 
-routes.delete('/department/:id/:userId',
+/**
+ * DELETE /department/:id/:userId
+ *
+ * Remove user from department
+ */
+routes.delete(
+  '/department/:id/:userId',
   auth.isAuthenticated,
   Department.delete.removeUser.validation,
-  makeExpressCallback(Department.delete.removeUser.method));
+  makeExpressCallback(Department.delete.removeUser.method),
+);
 
-routes.get('/department',
+/**
+ * GET /department
+ *
+ * Get department list
+ */
+routes.get(
+  '/department',
   auth.isAuthenticated,
-  makeExpressCallback(Department.get.getList.method));
+  makeExpressCallback(Department.get.getList.method),
+);
 
-routes.get('/department/:id',
+/**
+ * GET /department/:id
+ *
+ * Get department by id
+ */
+routes.get(
+  '/department/:id',
   auth.isAuthenticated,
   Department.get.getById.validation,
-  makeExpressCallback(Department.get.getById.method));
+  makeExpressCallback(Department.get.getById.method),
+);
 
 // ///////////////////////////////////////////////////////////////////////////////
 // Cost Center
 // ///////////////////////////////////////////////////////////////////////////////
 
-routes.post('/cost-center',
+/**
+ * POST /cost-center
+ *
+ * Create a new cost center
+ */
+routes.post(
+  '/cost-center',
   auth.isAuthenticated,
   CostCenter.post.add.validation,
-  makeExpressCallback(CostCenter.post.add.method));
+  makeExpressCallback(CostCenter.post.add.method),
+);
 
-routes.post('/cost-center/:id',
+/**
+ * POST /cost-center/:id
+ *
+ * Add department to cost center
+ */
+routes.post(
+  '/cost-center/:id',
   auth.isAuthenticated,
   CostCenter.post.addDepartment.validation,
-  makeExpressCallback(CostCenter.post.addDepartment.method));
+  makeExpressCallback(CostCenter.post.addDepartment.method),
+);
 
-routes.patch('/cost-center/:id',
+/**
+ * PATCH /cost-center/:id
+ *
+ * Update cost center
+ */
+routes.patch(
+  '/cost-center/:id',
   auth.isAuthenticated,
   CostCenter.patch.update.validation,
-  makeExpressCallback(CostCenter.patch.update.method));
+  makeExpressCallback(CostCenter.patch.update.method),
+);
 
-routes.get('/cost-center',
+/**
+ * GET /cost-center
+ *
+ * Get cost center list
+ */
+routes.get(
+  '/cost-center',
   auth.isAuthenticated,
-  makeExpressCallback(CostCenter.get.getList.method));
+  makeExpressCallback(CostCenter.get.getList.method),
+);
 
-routes.delete('/cost-center/:id',
+/**
+ * DELETE /cost-center/:id
+ *
+ * Remove a cost center
+ */
+routes.delete(
+  '/cost-center/:id',
   auth.isAuthenticated,
   CostCenter.delete.delete.validation,
-  makeExpressCallback(CostCenter.delete.delete.method));
+  makeExpressCallback(CostCenter.delete.delete.method),
+);
 
-routes.delete('/cost-center/:id/:departmentId',
+/**
+ * DELETE /cost-center/:id/:departmentId
+ *
+ * Remove department from cost center
+ */
+routes.delete(
+  '/cost-center/:id/:departmentId',
   auth.isAuthenticated,
   CostCenter.delete.removeDepartment.validation,
-  makeExpressCallback(CostCenter.delete.removeDepartment.method));
+  makeExpressCallback(CostCenter.delete.removeDepartment.method),
+);
 
 // ///////////////////////////////////////////////////////////////////////////////
 // Import
 // ///////////////////////////////////////////////////////////////////////////////
 
-routes.post('/import',
+/**
+ * POST /import
+ *
+ * Import by file
+ */
+routes.post(
+  '/import',
   auth.isAuthenticated,
   multer(multerConfig).single('file'),
-  makeExpressCallback(Import.import.importData.method));
+  makeExpressCallback(Import.import.importData.method),
+);
 
 export default routes;

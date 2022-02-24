@@ -16,7 +16,7 @@ export default function makeDepartment (department: DepartmentType): Readonly<De
     throw new ValidationError('DESCRIPTION_MIN_LENGTH', { value: 3 });
   }
   if (department.description.length > 40) {
-    throw new ValidationError('DESCRIPTION_MIN_LENGTH', { value: 40 });
+    throw new ValidationError('DESCRIPTION_MAX_LENGTH', { value: 40 });
   }
 
   return Object.freeze({

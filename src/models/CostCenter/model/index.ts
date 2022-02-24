@@ -16,7 +16,7 @@ export default function makeCostCenter (costCenter: CostCenterType): Readonly<Co
     throw new ValidationError('DESCRIPTION_MIN_LENGTH', { value: 3 });
   }
   if (costCenter.description.length > 50) {
-    throw new ValidationError('DESCRIPTION_MIN_LENGTH', { value: 50 });
+    throw new ValidationError('DESCRIPTION_MAX_LENGTH', { value: 50 });
   }
 
   return Object.freeze({
