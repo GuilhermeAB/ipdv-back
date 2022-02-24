@@ -23,7 +23,6 @@ yarn-error.log*
 /coverage
 
 .firebase/
-files/
 
 .yarn/*
 !.yarn/cache

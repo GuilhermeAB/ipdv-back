@@ -1,9 +1,5 @@
 version: "3.9"
 
-networks:
-  default: 
-    name: ipdv-net
-
 services:
   ipdv:
     container_name: ipdv
@@ -11,10 +7,8 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
-    networks:
-      - default
     command: yarn serve
     env_file:
       - .env
     ports:
-      - "3001:3001"
+      - "3000:3000"

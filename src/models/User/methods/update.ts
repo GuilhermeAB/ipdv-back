@@ -7,7 +7,7 @@ import { UserModel } from '../schema';
 export default async function update (user: UserType, session?: ClientSession): Promise<UserType> {
   const newUser = await makeUser(user);
 
-  const exists = await User.existsById(newUser._id!);
+  const exists = await User.existsById(newUser._id!, session);
   if (!exists) {
     throw new ValidationError('USER_NOT_FOUND');
   }

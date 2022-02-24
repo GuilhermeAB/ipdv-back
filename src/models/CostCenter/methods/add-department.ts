@@ -9,17 +9,17 @@ export default async function addDepartment (costCenterId: string, departmentId:
     throw new ValidationError('ID_REQUIRED');
   }
 
-  const costCenterExists = await CostCenter.existsById(costCenterId);
+  const costCenterExists = await CostCenter.existsById(costCenterId, session);
   if (!costCenterExists) {
     throw new ValidationError('COST_CENTER_NOT_FOUND');
   }
 
-  const departmentExists = await Department.existsById(departmentId);
+  const departmentExists = await Department.existsById(departmentId, session);
   if (!departmentExists) {
     throw new ValidationError('DEPARTMENT_NOT_FOUND');
   }
 
-  const alreadyHasDepartment = await CostCenter.hasDepartment(costCenterId, departmentId);
+  const alreadyHasDepartment = await CostCenter.hasDepartment(costCenterId, departmentId, session);
   if (alreadyHasDepartment) {
     throw new ValidationError('COST_CENTER_ALREADY_HAS_DEPARTMENT');
   }

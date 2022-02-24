@@ -3,7 +3,10 @@ import { DepartmentType } from '..';
 import { DepartmentModel } from '../schema';
 
 export default async function getById (id: string, session?: ClientSession): Promise<DepartmentType | null> {
-  const result = await DepartmentModel.findOne({ _id: id }, null, { session: session }).exec();
+  const result = await DepartmentModel
+    .findOne({ _id: id }, null, { session: session })
+    .populate('userList')
+    .exec();
 
   if (result) {
     return result.toJSON();

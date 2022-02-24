@@ -7,7 +7,7 @@ import { RoleModel } from '../schema';
 export default async function add (role: RoleType, session?: ClientSession): Promise<RoleType> {
   const newRole = makeRole(role);
 
-  const exists = await Role.existsByDescription(newRole.description);
+  const exists = await Role.existsByDescription(newRole.description, session);
   if (exists) {
     throw new ValidationError('ROLE_ALREADY_EXISTS');
   }

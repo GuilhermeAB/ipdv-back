@@ -7,7 +7,7 @@ import { DepartmentModel } from '../schema';
 export default async function update (department: DepartmentType, session?: ClientSession): Promise<DepartmentType> {
   const newDepartment = makeDepartment(department);
 
-  const exists = await Department.existsById(newDepartment._id!);
+  const exists = await Department.existsById(newDepartment._id!, session);
   if (!exists) {
     throw new ValidationError('DEPARTMENT_NOT_FOUND');
   }

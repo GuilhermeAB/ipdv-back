@@ -13,7 +13,7 @@ import update from './methods/update';
 export type DepartmentType = {
   _id?: string,
   description: string,
-  userList?: UserType[],
+  userList?: UserType[] | string[],
   createdAt?: Date,
   updatedAt?: Date,
   deletedAt?: Date,

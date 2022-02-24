@@ -5,7 +5,11 @@ import Role from 'src/controllers/Role';
 import User from 'src/controllers/User';
 import CostCenter from 'src/controllers/CostCenter';
 import init from 'src/util/router';
-// import { auth } from './middlewares';
+import multer from 'multer';
+import multerConfig from 'src/util/file/multer/config';
+import Import from 'src/controllers/Import';
+import Auth from 'src/controllers/Auth';
+import { auth } from './middlewares';
 import makeExpressCallback from './util/make-express-callback';
 
 const routes = Router();
@@ -15,14 +19,23 @@ init(routes);
 routes.get('/', (_request: Request, response: Response) => response.json({ message: 'Hello there' }));
 
 // ///////////////////////////////////////////////////////////////////////////////
+// Authentication
+// ///////////////////////////////////////////////////////////////////////////////
+
+routes.get('/auth', makeExpressCallback(Auth.get.getToken.method));
+
+// ///////////////////////////////////////////////////////////////////////////////
 // Role
 // ///////////////////////////////////////////////////////////////////////////////
 
 routes.post('/role',
+  auth.isAuthenticated,
   Role.post.add.validation,
   makeExpressCallback(Role.post.add.method));
 
-routes.get('/role', makeExpressCallback(Role.get.getList.method));
+routes.get('/role',
+  auth.isAuthenticated,
+  makeExpressCallback(Role.get.getList.method));
 
 // ///////////////////////////////////////////////////////////////////////////////
 // User
@@ -34,20 +47,26 @@ routes.get('/role', makeExpressCallback(Role.get.getList.method));
  * Create a new user
  */
 routes.post('/user',
+  auth.isAuthenticated,
   User.post.add.validation,
   makeExpressCallback(User.post.add.method));
 
 routes.put('/user/:id',
+  auth.isAuthenticated,
   User.put.update.validation,
   makeExpressCallback(User.put.update.method));
 
 routes.delete('/user/:id',
+  auth.isAuthenticated,
   User.delete.delete.validation,
   makeExpressCallback(User.delete.delete.method));
 
-routes.get('/user', makeExpressCallback(User.get.getList.method));
+routes.get('/user',
+  auth.isAuthenticated,
+  makeExpressCallback(User.get.getList.method));
 
 routes.get('/user/:id',
+  auth.isAuthenticated,
   User.get.getById.validation,
   makeExpressCallback(User.get.getById.method));
 
@@ -56,28 +75,36 @@ routes.get('/user/:id',
 // ///////////////////////////////////////////////////////////////////////////////
 
 routes.post('/department',
+  auth.isAuthenticated,
   Department.post.add.validation,
   makeExpressCallback(Department.post.add.method));
 
 routes.post('/department/:id',
+  auth.isAuthenticated,
   Department.post.addUser.validation,
   makeExpressCallback(Department.post.addUser.method));
 
 routes.patch('/department/:id',
+  auth.isAuthenticated,
   Department.patch.update.validation,
   makeExpressCallback(Department.patch.update.method));
 
 routes.delete('/department/:id',
+  auth.isAuthenticated,
   Department.delete.delete.validation,
   makeExpressCallback(Department.delete.delete.method));
 
 routes.delete('/department/:id/:userId',
+  auth.isAuthenticated,
   Department.delete.removeUser.validation,
   makeExpressCallback(Department.delete.removeUser.method));
 
-routes.get('/department', makeExpressCallback(Department.get.getList.method));
+routes.get('/department',
+  auth.isAuthenticated,
+  makeExpressCallback(Department.get.getList.method));
 
 routes.get('/department/:id',
+  auth.isAuthenticated,
   Department.get.getById.validation,
   makeExpressCallback(Department.get.getById.method));
 
@@ -86,25 +113,41 @@ routes.get('/department/:id',
 // ///////////////////////////////////////////////////////////////////////////////
 
 routes.post('/cost-center',
+  auth.isAuthenticated,
   CostCenter.post.add.validation,
   makeExpressCallback(CostCenter.post.add.method));
 
 routes.post('/cost-center/:id',
+  auth.isAuthenticated,
   CostCenter.post.addDepartment.validation,
   makeExpressCallback(CostCenter.post.addDepartment.method));
 
 routes.patch('/cost-center/:id',
+  auth.isAuthenticated,
   CostCenter.patch.update.validation,
   makeExpressCallback(CostCenter.patch.update.method));
 
-routes.get('/cost-center', makeExpressCallback(CostCenter.get.getList.method));
+routes.get('/cost-center',
+  auth.isAuthenticated,
+  makeExpressCallback(CostCenter.get.getList.method));
 
 routes.delete('/cost-center/:id',
+  auth.isAuthenticated,
   CostCenter.delete.delete.validation,
   makeExpressCallback(CostCenter.delete.delete.method));
 
 routes.delete('/cost-center/:id/:departmentId',
+  auth.isAuthenticated,
   CostCenter.delete.removeDepartment.validation,
   makeExpressCallback(CostCenter.delete.removeDepartment.method));
+
+// ///////////////////////////////////////////////////////////////////////////////
+// Import
+// ///////////////////////////////////////////////////////////////////////////////
+
+routes.post('/import',
+  auth.isAuthenticated,
+  multer(multerConfig).single('file'),
+  makeExpressCallback(Import.import.importData.method));
 
 export default routes;

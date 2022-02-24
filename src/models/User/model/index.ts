@@ -2,9 +2,10 @@ import { uuidValidateV4 } from 'src/util/uuid';
 import ValidationError from 'src/util/Error/validation-error';
 import { v4 as uuidv4 } from 'uuid';
 import Role from 'src/models/Role';
+import { ClientSession } from 'mongoose';
 import { UserType } from '..';
 
-export default async function makeUser (user: UserType): Promise<Readonly<UserType>> {
+export default async function makeUser (user: UserType, session?: ClientSession): Promise<Readonly<UserType>> {
   if (user._id && !uuidValidateV4(user._id)) {
     throw new ValidationError('ID_INVALID');
   }
@@ -24,7 +25,7 @@ export default async function makeUser (user: UserType): Promise<Readonly<UserTy
     throw new ValidationError('ROLE_REQUIRED');
   }
 
-  const roleExists = await Role.existsById(user.role);
+  const roleExists = await Role.existsById(user.role, session);
   if (!roleExists) {
     throw new ValidationError('ROLE_NOT_FOUND');
   }

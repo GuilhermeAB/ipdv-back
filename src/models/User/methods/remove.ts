@@ -4,7 +4,7 @@ import User from '..';
 import { UserModel } from '../schema';
 
 export default async function remove (userId: string, session?: ClientSession): Promise<boolean> {
-  const userExists = await User.existsById(userId);
+  const userExists = await User.existsById(userId, session);
   if (!userExists) {
     throw new ValidationError('USER_NOT_FOUND');
   }

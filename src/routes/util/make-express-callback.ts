@@ -5,6 +5,7 @@ import { validationResult } from 'express-validator';
 import type { ClientSession } from 'mongoose';
 import { db } from 'src/database';
 import ValidationError from 'src/util/Error/validation-error';
+import { removeFile } from 'src/util/file';
 import type { ParamsType } from 'src/util/i18n/methods/get-message';
 
 const DEFAULT_INTERNAL_ERROR = {
@@ -88,6 +89,16 @@ export default (callback: CallBackType, options: CallBackOptionsType = { session
   } finally {
     if (session) {
       await session.endSession();
+    }
+
+    if (request.file) {
+      const {
+        destination,
+        filename,
+      } = request.file;
+
+      const path = `${destination}/${filename}`;
+      removeFile(path);
     }
   }
 };

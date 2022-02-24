@@ -26,5 +26,9 @@
 	"ITEM_UPDATED": "Item updated",
 	"ITEM_ADDED": "Item added",
 	"ITEM_REMOVED": "Item removed",
-	"ITEM_NOT_FOUND": "Item not found"
+	"ITEM_NOT_FOUND": "Item not found",
+	"INVALID_FILE_TYPE": "Invalid file type",
+	"INVALID_FILE": "Invalid file",
+	"IMPORT_USER_NOT_FOUND": "User not found: {value}",
+	"FILE_REQUIRED": "File is required"
 }

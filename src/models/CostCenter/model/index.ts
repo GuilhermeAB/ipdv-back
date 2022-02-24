@@ -22,5 +22,6 @@ export default function makeCostCenter (costCenter: CostCenterType): Readonly<Co
   return Object.freeze({
     _id: costCenter._id || uuidv4(),
     description: costCenter.description,
+    departmentList: costCenter.departmentList,
   });
 }

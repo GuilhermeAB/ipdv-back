@@ -9,12 +9,12 @@ export default async function addUser (userId: string, departmentId: string, ses
     throw new ValidationError('ID_REQUIRED');
   }
 
-  const userExists = await User.existsById(userId);
+  const userExists = await User.existsById(userId, session);
   if (!userExists) {
     throw new ValidationError('USER_NOT_FOUND');
   }
 
-  const departmentExists = await Department.existsById(departmentId);
+  const departmentExists = await Department.existsById(departmentId, session);
   if (!departmentExists) {
     throw new ValidationError('DEPARTMENT_NOT_FOUND');
   }

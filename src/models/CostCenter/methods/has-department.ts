@@ -1,6 +1,7 @@
+import { ClientSession } from 'mongoose';
 import { CostCenterModel } from '../schema';
 
-export default async function hasDepartment (costCenterId: string, departmentId: string): Promise<boolean> {
+export default async function hasDepartment (costCenterId: string, departmentId: string, session?: ClientSession): Promise<boolean> {
   const result = await CostCenterModel.findOne(
     { _id: costCenterId },
     {
@@ -10,6 +11,9 @@ export default async function hasDepartment (costCenterId: string, departmentId:
         },
       },
       _id: 0,
+    },
+    {
+      session: session,
     },
   ).exec();
 

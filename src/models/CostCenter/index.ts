@@ -12,7 +12,7 @@ import update from './methods/update';
 export type CostCenterType = {
   _id?: string,
   description: string,
-  departmentList?: DepartmentType[],
+  departmentList?: DepartmentType[] | string[],
   createdAt?: Date,
   updatedAt?: Date,
   deletedAt?: Date,

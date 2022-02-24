@@ -1,3 +1,4 @@
+import { ClientSession } from 'mongoose';
 import { CostCenterModel } from '../schema';
 
 /**
@@ -6,8 +7,8 @@ import { CostCenterModel } from '../schema';
  * @param {string} id - Identifier
  * @returns return true if exists
  */
-export default async function existsById (id: string): Promise<boolean> {
-  const result = await CostCenterModel.exists({ _id: id });
+export default async function existsById (id: string, session?: ClientSession): Promise<boolean> {
+  const result = await CostCenterModel.findOne({ _id: id }, null, { session: session }).exec();
 
-  return result;
+  return !!result;
 }

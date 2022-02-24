@@ -1,3 +1,4 @@
+import { ClientSession } from 'mongoose';
 import { UserModel } from '../schema';
 
 /**
@@ -6,8 +7,8 @@ import { UserModel } from '../schema';
  * @param {string} name - Identifier
  * @returns return true if exists
  */
-export default async function existsByName (name: string): Promise<boolean> {
-  const result = await UserModel.exists({ name: name });
+export default async function existsByName (name: string, session?: ClientSession): Promise<boolean> {
+  const result = await UserModel.findOne({ name: name }, null, { session: session }).exec();
 
-  return result;
+  return !!result;
 }

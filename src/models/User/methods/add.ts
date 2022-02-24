@@ -5,9 +5,9 @@ import makeUser from '../model';
 import { UserModel } from '../schema';
 
 export default async function add (user: UserType, session?: ClientSession): Promise<UserType> {
-  const newUser = await makeUser(user);
+  const newUser = await makeUser(user, session);
 
-  const exists = await User.existsByName(newUser.name);
+  const exists = await User.existsByName(newUser.name, session);
   if (exists) {
     throw new ValidationError('USER_ALREADY_EXISTS');
   }
