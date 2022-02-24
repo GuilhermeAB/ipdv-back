@@ -13,12 +13,16 @@ export default function isAuthenticated (request: Request, response: Response, n
     throw new ValidationError('INTERNAL_ERROR_INVALID_ENV');
   }
 
-  const token: string | undefined = request.cookies && request.cookies.token;
-  const isValid = token && verify(token, SECRET_TOKEN_KEY);
+  try {
+    const token: string | undefined = request.cookies && request.cookies.token;
+    const isValid = token && verify(token, SECRET_TOKEN_KEY);
 
-  if (isValid) {
-    next();
-  } else {
+    if (isValid) {
+      next();
+    } else {
+      forbidden(response);
+    }
+  } catch (err) {
     forbidden(response);
   }
 }
