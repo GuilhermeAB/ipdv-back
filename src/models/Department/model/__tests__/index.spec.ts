@@ -27,6 +27,16 @@ describe('make department', () => {
     ).toThrow(new ValidationError('ID_INVALID'));
   });
 
+  it('should throw an exception if description is undefined', () => {
+    expect.assertions(1);
+
+    expect(
+      () => makeDepartment({
+        description: undefined as any,
+      }),
+    ).toThrow(new ValidationError('DESCRIPTION_REQUIRED'));
+  });
+
   it('should throw an exception if description length is invalid (MIN)', () => {
     expect.assertions(1);
 
