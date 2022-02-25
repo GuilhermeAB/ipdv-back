@@ -15,7 +15,18 @@ module.exports = {
   ],
   globals: {
     'ts-jest': {
-      tsConfig: 'tsconfig.test.json',
+      tsconfig: 'tsconfig.test.json',
     },
   },
+  coverageThreshold: {
+    global: {
+      branches: 100,
+      functions: 100,
+      lines: 100,
+      statements: 100,
+    },
+  },
+  coveragePathIgnorePatterns: [
+    '/schema/*',
+  ],
 };

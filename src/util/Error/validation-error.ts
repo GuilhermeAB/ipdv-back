@@ -1,7 +1,7 @@
 import getMessage, { ParamsType } from '../i18n/methods/get-message';
 
 export default class ValidationError extends Error {
-  private readonly code?: string;
+  private readonly code: string;
 
   private readonly params?: ParamsType;
 
@@ -29,7 +29,7 @@ export default class ValidationError extends Error {
     return this.params;
   }
 
-  public getCode (): string | undefined {
+  public getCode (): string {
     return this.code;
   }
 }

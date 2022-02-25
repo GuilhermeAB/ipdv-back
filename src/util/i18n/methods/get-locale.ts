@@ -16,5 +16,5 @@ export default function getLocale (): Record<string, string> {
     LOCALE,
   } = process.env;
 
-  return langFiles[(LOCALE || 'EN') as lang] || langFiles.EN;
+  return langFiles[(LOCALE || 'EN') as lang];
 }

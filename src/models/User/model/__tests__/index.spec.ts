@@ -34,6 +34,28 @@ describe('make user', () => {
     ).rejects.toThrow(new ValidationError('ID_INVALID'));
   });
 
+  it('should throw an exception if name is undefined', async () => {
+    expect.assertions(1);
+
+    await expect(
+      makeUser({
+        name: undefined as any,
+        role: faker.datatype.uuid(),
+      }),
+    ).rejects.toThrow(new ValidationError('NAME_REQUIRED'));
+  });
+
+  it('should throw an exception if role is undefined', async () => {
+    expect.assertions(1);
+
+    await expect(
+      makeUser({
+        name: faker.lorem.word(5),
+        role: undefined as any,
+      }),
+    ).rejects.toThrow(new ValidationError('ROLE_REQUIRED'));
+  });
+
   it('should throw an exception if name length is invalid (MIN)', async () => {
     expect.assertions(1);
 
