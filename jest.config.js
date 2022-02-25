@@ -13,4 +13,9 @@ module.exports = {
   modulePaths: [
     '<rootDir>',
   ],
+  globals: {
+    'ts-jest': {
+      tsConfig: 'tsconfig.test.json',
+    },
+  },
 };

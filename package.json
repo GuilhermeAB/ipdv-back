@@ -7,7 +7,7 @@
   "main": "src/index.ts",
   "scripts": {
     "clean": "rimraf dist",
-    "serve": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"yarn watch-ts\" \"yarn serve-debug\"",
+    "serve": "yarn clean && concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"yarn watch-ts\" \"yarn serve-debug\"",
     "serve-debug": "nodemon --inspect dist/src/index.js",
     "watch-ts": "tsc -w",
     "lint": "eslint .",
