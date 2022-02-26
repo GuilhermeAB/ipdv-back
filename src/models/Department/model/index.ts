@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { DepartmentType } from '..';
 
 export default function makeDepartment (department: DepartmentType): Readonly<DepartmentType> {
-  if (department._id && !uuidValidateV4(department._id)) {
+  if (department.id && !uuidValidateV4(department.id)) {
     throw new ValidationError('ID_INVALID');
   }
 
@@ -20,7 +20,7 @@ export default function makeDepartment (department: DepartmentType): Readonly<De
   }
 
   return Object.freeze({
-    _id: department._id || uuidv4(),
+    id: department.id || uuidv4(),
     description: department.description,
     userList: department.userList,
   });

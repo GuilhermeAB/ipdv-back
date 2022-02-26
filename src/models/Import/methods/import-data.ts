@@ -1,4 +1,3 @@
-import { ClientSession } from 'mongoose';
 import { MulterFile } from 'src/util/file/multer';
 import csv from 'csvtojson';
 import Ajv, { JSONSchemaType } from 'ajv';
@@ -7,6 +6,7 @@ import Role, { RoleType } from 'src/models/Role';
 import User, { UserType } from 'src/models/User';
 import Department, { DepartmentType } from 'src/models/Department';
 import CostCenter from 'src/models/CostCenter';
+import { Client } from 'pg';
 
 type CsvFileType = {
   USER_NAME: string,
@@ -37,14 +37,14 @@ function fileIsValid (data: Record<string, string>[]): boolean {
   return validate(data);
 }
 
-async function importRoles (list: string[], session?: ClientSession): Promise<RoleType[]> {
+async function importRoles (list: string[], session: Client): Promise<RoleType[]> {
   const resultList = list.map((item: string) => Role.add({ description: item }, session));
   const result = await Promise.all(resultList);
 
   return result;
 }
 
-async function importUsers (list: CsvFileType[], userList: string[], roles: RoleType[], session?: ClientSession): Promise<UserType[]> {
+async function importUsers (list: CsvFileType[], userList: string[], roles: RoleType[], session: Client): Promise<UserType[]> {
   const resultList = userList.map((name: string) => {
     const user = list.find((i) => i.USER_NAME === name);
     if (!user) {
@@ -55,7 +55,7 @@ async function importUsers (list: CsvFileType[], userList: string[], roles: Role
 
     return User.add({
       name: name,
-      role: role!._id!,
+      role_id: role!.id!,
     }, session);
   });
 
@@ -64,14 +64,14 @@ async function importUsers (list: CsvFileType[], userList: string[], roles: Role
   return result;
 }
 
-async function importDepartments (list: CsvFileType[], departmentList: string[], users: UserType[], session?: ClientSession): Promise<DepartmentType[]> {
+async function importDepartments (list: CsvFileType[], departmentList: string[], users: UserType[], session: Client): Promise<DepartmentType[]> {
   const resultList = departmentList.map((description: string) => {
     const userList = list
       .filter((i) => i.DEPARTMENT === description)
       .map((i) => i.USER_NAME);
     const userIdList = users
       .filter((i) => userList.includes(i.name))
-      .map((i) => i._id!);
+      .map((i) => i.id!);
 
     return Department.add({
       description: description,
@@ -84,14 +84,14 @@ async function importDepartments (list: CsvFileType[], departmentList: string[],
   return result;
 }
 
-async function importCostCenters (list: CsvFileType[], costCenterList: string[], departments: DepartmentType[], session?: ClientSession): Promise<DepartmentType[]> {
+async function importCostCenters (list: CsvFileType[], costCenterList: string[], departments: DepartmentType[], session: Client): Promise<DepartmentType[]> {
   const resultList = costCenterList.map((description: string) => {
     const departmentList = list
       .filter((i) => i.COST_CENTER === description)
       .map((i) => i.DEPARTMENT);
     const departmentIdList = departments
       .filter((i) => departmentList.includes(i.description))
-      .map((i) => i._id!);
+      .map((i) => i.id!);
 
     return CostCenter.add({
       description: description,
@@ -104,7 +104,7 @@ async function importCostCenters (list: CsvFileType[], costCenterList: string[],
   return result;
 }
 
-export default async function importData (file: MulterFile, session?: ClientSession): Promise<boolean> {
+export default async function importData (file: MulterFile, session: Client): Promise<boolean> {
   if (!file) {
     throw new ValidationError('FILE_REQUIRED');
   }

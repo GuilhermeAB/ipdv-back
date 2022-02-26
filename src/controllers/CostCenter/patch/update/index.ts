@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import { ClientSession } from 'mongoose';
+import { Client } from 'pg';
 import CostCenter from 'src/models/CostCenter';
 import parameterValidation from './parameter-validation';
 
-async function method (request: Request, response: Response, session?: ClientSession): Promise<Response> {
+async function method (request: Request, response: Response, session: Client): Promise<Response> {
   const {
     id,
   } = request.params;
@@ -13,7 +13,7 @@ async function method (request: Request, response: Response, session?: ClientSes
   } = request.body;
 
   const costCenter = await CostCenter.update({
-    _id: id,
+    id: id,
     description: description,
   }, session);
 

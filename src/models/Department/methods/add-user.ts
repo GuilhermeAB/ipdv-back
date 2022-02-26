@@ -1,10 +1,10 @@
-import { ClientSession } from 'mongoose';
+import { Client } from 'pg';
+import { sqlInsert } from 'src/database/util';
 import User from 'src/models/User';
 import ValidationError from 'src/util/Error/validation-error';
 import Department from '..';
-import { DepartmentModel } from '../schema';
 
-export default async function addUser (userId: string, departmentId: string, session?: ClientSession): Promise<boolean> {
+export default async function addUser (userId: string, departmentId: string, session: Client): Promise<boolean> {
   if (!userId || !departmentId) {
     throw new ValidationError('ID_REQUIRED');
   }
@@ -19,22 +19,19 @@ export default async function addUser (userId: string, departmentId: string, ses
     throw new ValidationError('DEPARTMENT_NOT_FOUND');
   }
 
-  const alreadyHasUser = await Department.hasUser(departmentId, userId);
+  const alreadyHasUser = await Department.hasUser(departmentId, userId, session);
   if (alreadyHasUser) {
     throw new ValidationError('DEPARTMENT_ALREADY_HAS_USER');
   }
 
-  await DepartmentModel.findOneAndUpdate(
-    { _id: departmentId },
-    {
-      $push: {
-        userList: userId,
-      },
+  await sqlInsert({
+    table: 'department_person',
+    values: {
+      department_id: departmentId,
+      person_id: userId,
     },
-    {
-      session: session,
-    },
-  ).exec();
+    client: session,
+  });
 
   return true;
 }

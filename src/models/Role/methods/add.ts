@@ -1,10 +1,10 @@
-import { ClientSession } from 'mongoose';
+import { Client } from 'pg';
+import { sqlInsert } from 'src/database/util';
 import ValidationError from 'src/util/Error/validation-error';
 import Role, { RoleType } from '..';
 import makeRole from '../model';
-import { RoleModel } from '../schema';
 
-export default async function add (role: RoleType, session?: ClientSession): Promise<RoleType> {
+export default async function add (role: RoleType, session: Client): Promise<RoleType> {
   const newRole = makeRole(role);
 
   const exists = await Role.existsByDescription(newRole.description, session);
@@ -12,10 +12,15 @@ export default async function add (role: RoleType, session?: ClientSession): Pro
     throw new ValidationError('ROLE_ALREADY_EXISTS');
   }
 
-  const result = new RoleModel(newRole);
-  await result.validate();
-  await result.save({ session: session });
-  const item = result.toJSON();
+  const result = await sqlInsert({
+    table: 'person_role',
+    values: {
+      id: newRole.id,
+      description: newRole.description,
+      created_at: new Date(),
+    },
+    client: session,
+  });
 
-  return item;
+  return result;
 }

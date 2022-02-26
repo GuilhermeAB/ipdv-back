@@ -1,20 +1,27 @@
-import { ClientSession } from 'mongoose';
+import { Client } from 'pg';
+import { sqlDelete } from 'src/database/util';
 import ValidationError from 'src/util/Error/validation-error';
 import User from '..';
-import { UserModel } from '../schema';
 
-export default async function remove (userId: string, session?: ClientSession): Promise<boolean> {
+export default async function remove (userId: string, session: Client): Promise<boolean> {
   const userExists = await User.existsById(userId, session);
   if (!userExists) {
     throw new ValidationError('USER_NOT_FOUND');
   }
 
-  await UserModel.deleteOne(
-    { _id: userId },
-    {
-      session: session,
-    },
-  ).exec();
+  await sqlDelete({
+    table: 'department_person',
+    where: 'where person_id = $1',
+    params: [userId],
+    client: session,
+  });
+
+  await sqlDelete({
+    table: 'person',
+    where: 'where id = $1',
+    params: [userId],
+    client: session,
+  });
 
   return true;
 }

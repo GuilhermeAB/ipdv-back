@@ -1,10 +1,10 @@
-import { ClientSession } from 'mongoose';
+import { Client } from 'pg';
+import { sqlDelete } from 'src/database/util';
 import Department from 'src/models/Department';
 import ValidationError from 'src/util/Error/validation-error';
 import CostCenter from '..';
-import { CostCenterModel } from '../schema';
 
-export default async function removeDepartment (costCenterId: string, departmentId: string, session?: ClientSession): Promise<boolean> {
+export default async function removeDepartment (costCenterId: string, departmentId: string, session: Client): Promise<boolean> {
   if (!costCenterId || !departmentId) {
     throw new ValidationError('ID_REQUIRED');
   }
@@ -24,17 +24,12 @@ export default async function removeDepartment (costCenterId: string, department
     throw new ValidationError('DEPARTMENT_NOT_FOUND');
   }
 
-  await CostCenterModel.findOneAndUpdate(
-    { _id: costCenterId },
-    {
-      $pull: {
-        departmentList: departmentId,
-      },
-    },
-    {
-      session: session,
-    },
-  ).exec();
+  await sqlDelete({
+    table: 'cost_center_department',
+    where: 'where cost_center_id = $1 and department_id = $2',
+    params: [costCenterId, departmentId],
+    client: session,
+  });
 
   return true;
 }

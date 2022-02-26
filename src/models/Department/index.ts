@@ -11,7 +11,7 @@ import removeUser from './methods/remove-user';
 import update from './methods/update';
 
 export type DepartmentType = {
-  _id?: string,
+  id?: string,
   description: string,
   userList?: UserType[] | string[],
   createdAt?: Date,

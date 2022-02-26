@@ -1,5 +1,5 @@
-import { ClientSession } from 'mongoose';
-import { DepartmentModel } from '../schema';
+import { Client } from 'pg';
+import { sqlQuery } from 'src/database/util';
 
 /**
  * Check if exists by description
@@ -7,8 +7,17 @@ import { DepartmentModel } from '../schema';
  * @param {string} description - Identifier
  * @returns return true if exists
  */
-export default async function existsByDescription (description: string, session?: ClientSession): Promise<boolean> {
-  const result = await DepartmentModel.findOne({ description: description }, null, { session: session }).exec();
+export default async function existsByDescription (description: string, session: Client): Promise<boolean> {
+  const result = await sqlQuery({
+    query: `select
+      1
+    from department
+    where description = $1
+      limit 1
+    `,
+    client: session,
+    params: [description],
+  });
 
-  return !!result;
+  return !!(result && result[0]);
 }

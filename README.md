@@ -48,11 +48,11 @@ yarn build
 # Testes unitários
 yarn test
 ```
-
+<!-- 
 ⭐ Executando a aplicação via docker:
 ```sh
 docker-compose up --build
-```
+``` -->
 
 Obs: Desenvolvi a aplicação utilizando Yarn 3 (PnP), saiba mais sobre clicando [aqui](https://yarnpkg.com/features/pnp)
 
@@ -65,7 +65,9 @@ Lista de algumas das tecnologias/pacotes que foram utilizados na aplicação
 * [express](https://www.npmjs.com/package/express)
 * [express-validator](https://www.npmjs.com/package/express-validator)
 * [multer](https://www.npmjs.com/package/multer)
-* [mongoose](https://mongoosejs.com/)
+* [pg](https://www.npmjs.com/package/pg)
+* [db-migrate](https://www.npmjs.com/package/db-migrate)
+* [db-migrate-pg](https://www.npmjs.com/package/db-migrate-pg)
 * [lodash](https://www.npmjs.com/package/lodash)
 * [date-fns](https://www.npmjs.com/package/date-fns)
 * [morgan](https://www.npmjs.com/package/morgan)

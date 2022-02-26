@@ -1,5 +1,5 @@
-import { ClientSession } from 'mongoose';
-import { CostCenterModel } from '../schema';
+import { Client } from 'pg';
+import { sqlQuery } from 'src/database/util';
 
 /**
  * Check if exists by id
@@ -7,8 +7,17 @@ import { CostCenterModel } from '../schema';
  * @param {string} id - Identifier
  * @returns return true if exists
  */
-export default async function existsById (id: string, session?: ClientSession): Promise<boolean> {
-  const result = await CostCenterModel.findOne({ _id: id }, null, { session: session }).exec();
+export default async function existsById (id: string, session: Client): Promise<boolean> {
+  const result = await sqlQuery({
+    query: `select
+      1
+    from cost_center
+    where id = $1
+      limit 1
+    `,
+    client: session,
+    params: [id],
+  });
 
-  return !!result;
+  return !!(result && result[0]);
 }

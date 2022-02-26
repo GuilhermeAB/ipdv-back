@@ -7,9 +7,9 @@ import remove from './methods/remove';
 import update from './methods/update';
 
 export type UserType = {
-  _id?: string,
+  id?: string,
   name: string,
-  role: string,
+  role_id: string,
   createdAt?: Date,
   updatedAt?: Date,
   deletedAt?: Date,

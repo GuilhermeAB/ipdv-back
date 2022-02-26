@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { CostCenterType } from '..';
 
 export default function makeCostCenter (costCenter: CostCenterType): Readonly<CostCenterType> {
-  if (costCenter._id && !uuidValidateV4(costCenter._id)) {
+  if (costCenter.id && !uuidValidateV4(costCenter.id)) {
     throw new ValidationError('ID_INVALID');
   }
 
@@ -20,7 +20,7 @@ export default function makeCostCenter (costCenter: CostCenterType): Readonly<Co
   }
 
   return Object.freeze({
-    _id: costCenter._id || uuidv4(),
+    id: costCenter.id || uuidv4(),
     description: costCenter.description,
     departmentList: costCenter.departmentList,
   });

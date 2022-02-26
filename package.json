@@ -7,12 +7,16 @@
   "main": "src/index.ts",
   "scripts": {
     "clean": "rimraf dist",
-    "serve": "yarn clean && concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"yarn watch-ts\" \"yarn serve-debug\"",
+    "run-migration": "node src/database/index",
+    "serve": "yarn clean && yarn run-migration && concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"cyan.bold,green.bold\" \"yarn watch-ts\" \"yarn serve-debug\"",
     "serve-debug": "nodemon --inspect dist/src/index.js",
     "watch-ts": "tsc -w",
     "lint": "eslint .",
     "test": "jest",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "db": "node .yarn/unplugged/db-migrate-npm-0.11.13-3a90ab8530/node_modules/db-migrate/bin/db-migrate",
+    "db-new-migration": "yarn db create --sql-file",
+    "db-run-migrations": "yarn db up"
   },
   "dependencies": {
     "ajv": "^8.10.0",
@@ -21,15 +25,17 @@
     "cors": "^2.8.5",
     "csvtojson": "^2.0.10",
     "date-fns": "^2.28.0",
+    "db-migrate": "^0.11.13",
+    "db-migrate-pg": "^1.2.2",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-validator": "^6.12.2",
     "helmet": "^4.6.0",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
-    "mongoose": "^6.0.7",
     "morgan": "^1.10.0",
     "multer": "^1.4.4",
+    "pg": "^8.7.3",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
@@ -49,6 +55,7 @@
     "@types/morgan": "^1.9.3",
     "@types/multer": "^1.4.7",
     "@types/node": "^16.10.1",
+    "@types/pg": "^8.6.4",
     "@types/uuid": "^8.3.1",
     "@typescript-eslint/eslint-plugin": "^5.12.1",
     "@typescript-eslint/experimental-utils": "^5.12.1",
@@ -68,5 +75,10 @@
     "tsconfig-paths": "^3.11.0",
     "typescript": "^4.5.5"
   },
-  "packageManager": "yarn@3.1.1"
+  "packageManager": "yarn@3.1.1",
+  "dependenciesMeta": {
+    "db-migrate@0.11.13": {
+      "unplugged": true
+    }
+  }
 }

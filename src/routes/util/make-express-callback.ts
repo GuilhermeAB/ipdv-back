@@ -2,11 +2,25 @@ import type {
   NextFunction, Request, RequestHandler, Response,
 } from 'express';
 import { validationResult } from 'express-validator';
-import type { ClientSession } from 'mongoose';
-import { db } from 'src/database';
 import ValidationError from 'src/util/Error/validation-error';
 import { removeFile } from 'src/util/file';
 import type { ParamsType } from 'src/util/i18n/methods/get-message';
+import {
+  Pool, ClientConfig, Client,
+} from 'pg';
+import { config } from 'dotenv';
+
+config();
+
+const databaseConfig: ClientConfig = {
+  user: process.env.DATABASE_USER_USERNAME,
+  password: process.env.DATABASE_USER_PASSWORD,
+  host: process.env.DATABASE_HOST,
+  database: process.env.DATABASE_NAME,
+  port: parseInt(process.env.DATABASE_PORT!, 10),
+};
+
+const pool = new Pool(databaseConfig);
 
 const DEFAULT_INTERNAL_ERROR = {
   messages: {
@@ -17,10 +31,7 @@ const DEFAULT_INTERNAL_ERROR = {
   },
 };
 
-export type CallBackType = (request: Request, response: Response, session?: ClientSession) => Promise<Response>;
-export type CallBackOptionsType = {
-  session: boolean,
-};
+export type CallBackType = (request: Request, response: Response, session: Client) => Promise<Response>;
 type validationResultErrorType = {
   msg: {
     code: string,
@@ -29,7 +40,7 @@ type validationResultErrorType = {
   }
 };
 
-export default (callback: CallBackType, options: CallBackOptionsType = { session: true }): RequestHandler => async (request: Request, response: Response, next: NextFunction): Promise<Response> => {
+export default (callback: CallBackType): RequestHandler => async (request: Request, response: Response, next: NextFunction): Promise<Response> => {
   let session;
 
   let logError;
@@ -50,21 +61,20 @@ export default (callback: CallBackType, options: CallBackOptionsType = { session
       return response.status(400).json(logError);
     }
 
-    if (options.session) {
-      session = await db.startSession();
-      session.startTransaction();
-    }
+    session = await pool.connect();
+    await session.query('BEGIN');
 
-    const result = await callback(request, response, session);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await callback(request, response, session as any);
 
     if (session) {
-      await session.commitTransaction();
+      await session.query('COMMIT');
     }
 
     return result;
   } catch (e) {
     if (session) {
-      await session.abortTransaction();
+      await session.query('ROLLBACK');
     }
 
     if (e instanceof ValidationError) {
@@ -88,7 +98,7 @@ export default (callback: CallBackType, options: CallBackOptionsType = { session
     return response.status(500).json(logError);
   } finally {
     if (session) {
-      await session.endSession();
+      session.release();
     }
 
     if (request.file) {

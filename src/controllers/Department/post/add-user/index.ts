@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import { ClientSession } from 'mongoose';
+import { Client } from 'pg';
 import Department from 'src/models/Department';
 import parameterValidation from './parameter-validation';
 
-async function method (request: Request, response: Response, session?: ClientSession): Promise<Response> {
+async function method (request: Request, response: Response, session: Client): Promise<Response> {
   const {
     id,
   } = request.params;

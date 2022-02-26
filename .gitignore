@@ -31,5 +31,6 @@ yarn-error.log*
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+!.yar/unplugged
 
 TODO.md

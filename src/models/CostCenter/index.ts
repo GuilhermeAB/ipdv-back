@@ -10,7 +10,7 @@ import removeDepartment from './methods/remove-department';
 import update from './methods/update';
 
 export type CostCenterType = {
-  _id?: string,
+  id?: string,
   description: string,
   departmentList?: DepartmentType[] | string[],
   createdAt?: Date,

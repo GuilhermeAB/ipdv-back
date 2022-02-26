@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { RoleType } from '..';
 
 export default function makeRole (role: RoleType): Readonly<RoleType> {
-  if (role._id && !uuidValidateV4(role._id)) {
+  if (role.id && !uuidValidateV4(role.id)) {
     throw new ValidationError('ID_INVALID');
   }
 
@@ -20,7 +20,7 @@ export default function makeRole (role: RoleType): Readonly<RoleType> {
   }
 
   return Object.freeze({
-    _id: role._id || uuidv4(),
+    id: role.id || uuidv4(),
     description: role.description,
   });
 }

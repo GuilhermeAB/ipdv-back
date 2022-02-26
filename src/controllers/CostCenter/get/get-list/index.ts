@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import { ClientSession } from 'mongoose';
+import { Client } from 'pg';
 import CostCenter from 'src/models/CostCenter';
 
-async function method (request: Request, response: Response, session?: ClientSession): Promise<Response> {
+async function method (request: Request, response: Response, session: Client): Promise<Response> {
   const list = await CostCenter.getList(session);
 
   return response.success({

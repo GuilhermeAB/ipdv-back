@@ -1,5 +1,5 @@
-import { ClientSession } from 'mongoose';
-import { UserModel } from '../schema';
+import { Client } from 'pg';
+import { sqlQuery } from 'src/database/util';
 
 /**
  * Check if exists by name
@@ -7,8 +7,17 @@ import { UserModel } from '../schema';
  * @param {string} name - Identifier
  * @returns return true if exists
  */
-export default async function existsByName (name: string, session?: ClientSession): Promise<boolean> {
-  const result = await UserModel.findOne({ name: name }, null, { session: session }).exec();
+export default async function existsByName (name: string, session: Client): Promise<boolean> {
+  const result = await sqlQuery({
+    query: `select
+      1
+    from person
+    where name = $1
+      limit 1
+    `,
+    client: session,
+    params: [name],
+  });
 
-  return !!result;
+  return !!(result && result[0]);
 }

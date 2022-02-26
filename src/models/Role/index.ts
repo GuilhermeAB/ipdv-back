@@ -4,7 +4,7 @@ import existsById from './methods/exists-by-id';
 import getList from './methods/get-list';
 
 export type RoleType = {
-  _id?: string,
+  id?: string,
   description: string,
   createdAt?: Date,
   updatedAt?: Date,

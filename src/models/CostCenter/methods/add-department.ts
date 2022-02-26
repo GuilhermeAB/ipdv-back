@@ -1,10 +1,10 @@
-import { ClientSession } from 'mongoose';
+import { Client } from 'pg';
+import { sqlInsert } from 'src/database/util';
 import Department from 'src/models/Department';
 import ValidationError from 'src/util/Error/validation-error';
 import CostCenter from '..';
-import { CostCenterModel } from '../schema';
 
-export default async function addDepartment (costCenterId: string, departmentId: string, session?: ClientSession): Promise<boolean> {
+export default async function addDepartment (costCenterId: string, departmentId: string, session: Client): Promise<boolean> {
   if (!costCenterId || !departmentId) {
     throw new ValidationError('ID_REQUIRED');
   }
@@ -24,17 +24,14 @@ export default async function addDepartment (costCenterId: string, departmentId:
     throw new ValidationError('COST_CENTER_ALREADY_HAS_DEPARTMENT');
   }
 
-  await CostCenterModel.findOneAndUpdate(
-    { _id: costCenterId },
-    {
-      $push: {
-        departmentList: departmentId,
-      },
+  await sqlInsert({
+    table: 'cost_center_department',
+    values: {
+      cost_center_id: costCenterId,
+      department_id: departmentId,
     },
-    {
-      session: session,
-    },
-  ).exec();
+    client: session,
+  });
 
   return true;
 }

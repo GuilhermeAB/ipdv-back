@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import { ClientSession } from 'mongoose';
+import { Client } from 'pg';
 import User from 'src/models/User';
 import parameterValidation from './parameter-validation';
 
-async function method (request: Request, response: Response, session?: ClientSession): Promise<Response> {
+async function method (request: Request, response: Response, session: Client): Promise<Response> {
   const {
     id,
   } = request.params;
@@ -14,9 +14,9 @@ async function method (request: Request, response: Response, session?: ClientSes
   } = request.body;
 
   const user = await User.update({
-    _id: id,
+    id: id,
     name: name,
-    role: role,
+    role_id: role,
   }, session);
 
   return response.success({

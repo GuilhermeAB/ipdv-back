@@ -1,6 +1,6 @@
-import { ClientSession } from 'mongoose';
+import { Client } from 'pg';
+import { sqlQuery } from 'src/database/util';
 import { RoleType } from '..';
-import { RoleModel } from '../schema';
 
 /**
  * Get roles
@@ -8,8 +8,14 @@ import { RoleModel } from '../schema';
  * @param {ClientSession} session - Session
  * @returns Returns roles or null
  */
-export default async function getList (session?: ClientSession): Promise<RoleType[] | null> {
-  const result = await RoleModel.find({}, null, { session: session }).exec();
+export default async function getList (session: Client): Promise<RoleType[] | null> {
+  const result = await sqlQuery({
+    query: `select
+      id, description, created_at, updated_at
+    from person_role
+    `,
+    client: session,
+  });
 
   return result;
 }
