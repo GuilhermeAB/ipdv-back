@@ -1,6 +1,7 @@
 {
 	"INTERNAL_ERROR_INVALID_ENV": "Internal error. Invalid environment file",
 	"SIGN_IN_REQUIRED": "Forbidden. You must be logged in to perform this action",
+	"SIGN_IN_SUCCESS": "Sign in successfully",
 	"ID_INVALID": "Identifier is not a valid",
 	"ID_REQUIRED": "Identifier is required",
 	"DESCRIPTION_REQUIRED": "Description is required",

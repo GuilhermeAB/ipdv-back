@@ -258,6 +258,18 @@ routes.get(
 );
 
 /**
+ * GET /cost-center/:id
+ *
+ * Get cost center by id
+ */
+routes.get(
+  '/cost-center/:id',
+  auth.isAuthenticated,
+  CostCenter.get.getById.validation,
+  makeExpressCallback(CostCenter.get.getById.method),
+);
+
+/**
  * DELETE /cost-center/:id
  *
  * Remove a cost center

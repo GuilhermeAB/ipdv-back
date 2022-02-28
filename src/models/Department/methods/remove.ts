@@ -17,6 +17,13 @@ export default async function remove (departmentId: string, session: Client): Pr
   });
 
   await sqlDelete({
+    table: 'cost_center_department',
+    where: 'where department_id = $1',
+    params: [departmentId],
+    client: session,
+  });
+
+  await sqlDelete({
     table: 'department',
     where: 'where id = $1',
     params: [departmentId],

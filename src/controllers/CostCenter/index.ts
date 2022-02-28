@@ -4,6 +4,7 @@ import addDepartment from './post/add-department';
 import remove from './delete/remove';
 import removeDepartment from './delete/remove-department';
 import update from './patch/update';
+import getById from './get/get-by-id';
 
 export default {
   post: {
@@ -15,6 +16,7 @@ export default {
   },
   get: {
     getList: getList,
+    getById: getById,
   },
   delete: {
     delete: remove,

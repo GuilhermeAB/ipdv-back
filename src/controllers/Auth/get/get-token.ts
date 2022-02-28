@@ -14,7 +14,7 @@ async function method (request: Request, response: Response, session: Client): P
 
   return response.success({
     authenticated: true,
-  });
+  }, 'SIGN_IN_SUCCESS');
 }
 
 export default {

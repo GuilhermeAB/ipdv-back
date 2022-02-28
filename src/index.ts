@@ -48,6 +48,7 @@ app.use(express.json());
 app.use(cors({
   origin: [
     `http://localhost:${PORT}`,
+    'http://localhost:8080',
   ],
   allowedHeaders: [
     'Content-Type',

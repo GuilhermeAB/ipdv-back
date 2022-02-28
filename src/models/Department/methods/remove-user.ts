@@ -26,7 +26,7 @@ export default async function removeUser (userId: string, departmentId: string, 
 
   await sqlDelete({
     table: 'department_person',
-    where: 'where department_id = $1 person_id = $2',
+    where: 'where department_id = $1 and person_id = $2',
     params: [departmentId, userId],
     client: session,
   });

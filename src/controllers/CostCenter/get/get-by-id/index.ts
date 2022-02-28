@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { Client } from 'pg';
-import User from 'src/models/User';
+import CostCenter from 'src/models/CostCenter';
 import parameterValidation from './parameter-validation';
 
 async function method (request: Request, response: Response, session: Client): Promise<Response> {
@@ -8,7 +8,7 @@ async function method (request: Request, response: Response, session: Client): P
     id,
   } = request.params;
 
-  const item = await User.getById(id, session);
+  const item = await CostCenter.getById(id, session);
 
   return response.success({
     item: item,

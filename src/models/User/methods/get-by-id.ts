@@ -6,7 +6,7 @@ export default async function getById (id: string, session: Client): Promise<Use
   const result = await sqlQuery({
     query: `select
       p.id, p.name, p.created_at, p.updated_at,
-      pr.description as role_description
+      pr.description as role_description, pr.id as role_id
     from person p
       inner join person_role pr on pr.id = p.role_id
     where p.id = $1

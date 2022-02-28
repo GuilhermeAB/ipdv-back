@@ -3,6 +3,7 @@ import add from './methods/add';
 import addDepartment from './methods/add-department';
 import existsByDescription from './methods/exists-by-description';
 import existsById from './methods/exists-by-id';
+import getById from './methods/get-by-id';
 import getList from './methods/get-list';
 import hasDepartment from './methods/has-department';
 import remove from './methods/remove';
@@ -26,6 +27,7 @@ export default {
   addDepartment: addDepartment,
   removeDepartment: removeDepartment,
   getList: getList,
+  getById: getById,
   remove: remove,
   update: update,
 };
